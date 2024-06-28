@@ -118,11 +118,11 @@ int main()
 	ll a;
 	a.append(1);
 	a.append(2);
-	a.append(3);
+	a.append(32);
 	a.print();
 	a.pop(0);
 	a.print();
-
+	a.append(123);
 
 }
 	
