@@ -1,6 +1,7 @@
 import requests
 import urllib.parse
-#lol
+#ul7ragamer128@outlook.com
+#CataClash
 def toString(List): 
     return ''.join(List) 
 
