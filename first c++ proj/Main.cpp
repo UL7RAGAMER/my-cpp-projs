@@ -123,5 +123,6 @@ int main()
 	a.pop(0);
 	a.print();
 
+
 }
 	
