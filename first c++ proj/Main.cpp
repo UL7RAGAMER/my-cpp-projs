@@ -95,6 +95,24 @@ public:
 		}
 				
 	}
+	void insert(int index, int value)
+	{
+		node* c = head;
+		node* pp{};
+		for (int i = 0;i < index;i++)
+		{
+			if (index - 1 == i)
+			{
+				pp = c;
+			}
+			c = c->ptr;
+
+		}
+		node* nn = new node(value, c);
+		pp->ptr = nn;
+
+
+	}
 	void print()
 	{
 		log(*head);
@@ -120,9 +138,8 @@ int main()
 	a.append(2);
 	a.append(32);
 	a.print();
-	a.pop(0);
+	a.insert(2, 23);
 	a.print();
-	a.append(123);
 
 }
 	
