@@ -28,8 +28,10 @@ class ll {
 	node* head{};
 	node* current{};
 	node* x{};
+
 public:
-	~ll() 
+
+	~ll()
 	{
 		node* c = head;
 		while (c->ptr) {
@@ -38,7 +40,6 @@ public:
 			c = next;
 		}
 	}
-
 	void append(int v)
 	{
 		if (!head) 
@@ -140,6 +141,12 @@ int main()
 	a.print();
 	a.insert(2, 23);
 	a.print();
+	a.
+	
+	int v1 = 1;
+	int speed = (v1 < 10) ? 1 :
+		(v1 > 20) ? 2 :
+		3;
 
 }
 	
