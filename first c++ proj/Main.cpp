@@ -28,31 +28,39 @@ class ll {
 	node* head{};
 	node* current{};
 	node* x{};
-
+	
+	 
 public:
-
+	int size = 0;
 	~ll()
 	{
-		node* c = head;
-		while (c->ptr) {
-			node* next = c->ptr;
-			delete c;
-			c = next;
+		if (head)
+		{
+			node* c = head;
+			while (c->ptr) {
+				node* next = c->ptr;
+				delete c;
+				c = next;
+			}
 		}
+		else;
 	}
 	void append(int v)
 	{
+		
 		if (!head) 
 		{
 			node* n= new node(v, nullptr);
 			head = n;
 			current = head;
+			size++;
 			return;
 		}
 		node* n = new node(v, nullptr);
 		x = n;
 		current->ptr = n;
 		current = n;
+		size++;
 	}
 	int get(int index){
 		int v = -1;
@@ -66,11 +74,48 @@ public:
 		return v;
 	}
 	int pop(int index)
-	{
-		node* c = head;
-		if (index != 0) 
-		{	
-			node* pp=nullptr;
+	{	
+		if (index < size)
+		{
+			node* c = head;
+			if (index > 0)
+			{
+				node* pp = nullptr;
+				for (int i = 0;i < index;i++)
+				{
+					if (index - 1 == i)
+					{
+						pp = c;
+					}
+					c = c->ptr;
+
+				}
+				int v = c->value;
+				node* np = c->ptr;
+				pp->ptr = np;
+				delete c;
+				return v;
+			}
+			else if (index == 0)
+			{
+				int v = head->value;
+				node* np = head->ptr;
+				delete head;
+				head = np;
+				return v;
+			}
+			else log("Out of bounds");
+		}
+
+		else log("Out of bounds");
+				
+	}
+	void insert(int index, int value)
+	{	
+		if (index<size)
+		{
+			node* c = head;
+			node* pp{};
 			for (int i = 0;i < index;i++)
 			{
 				if (index - 1 == i)
@@ -78,45 +123,18 @@ public:
 					pp = c;
 				}
 				c = c->ptr;
-				
+
 			}
-			int v = c->value;
-			node* np = c->ptr;
-			pp->ptr = np;
-			delete c;
-			return v;
+			node* nn = new node(value, c);
+			pp->ptr = nn;
+			size++;
 		}
-		else
-		{
-			int v = head->value;
-			node *np = head->ptr;
-			delete head;
-			head = np;
-			return v;
-		}
-				
-	}
-	void insert(int index, int value)
-	{
-		node* c = head;
-		node* pp{};
-		for (int i = 0;i < index;i++)
-		{
-			if (index - 1 == i)
-			{
-				pp = c;
-			}
-			c = c->ptr;
-
-		}
-		node* nn = new node(value, c);
-		pp->ptr = nn;
-
-
+		else log("Out of bounds");
 	}
 	void print()
-	{
-		log(*head);
+	{	
+		if (head) { log(*head); }
+		else log("Cannot print (nullptr)")
 	}
 
 	ll operator+(ll& n )
@@ -139,14 +157,10 @@ int main()
 	a.append(2);
 	a.append(32);
 	a.print();
-	a.insert(2, 23);
+	log(a.size);
+	a.insert(2, 233);
 	a.print();
-	a.
-	
-	int v1 = 1;
-	int speed = (v1 < 10) ? 1 :
-		(v1 > 20) ? 2 :
-		3;
+
 
 }
 	
