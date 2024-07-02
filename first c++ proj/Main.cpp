@@ -34,16 +34,12 @@ public:
 	int size = 0;
 	~ll()
 	{
-		if (head)
-		{
-			node* c = head;
-			while (c->ptr) {
-				node* next = c->ptr;
-				delete c;
-				c = next;
-			}
+		node* c = head;
+		while (c) {
+			node* next = c->ptr;
+			delete c;
+			c = next;
 		}
-		else;
 	}
 	void append(int v)
 	{
