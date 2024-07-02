@@ -77,12 +77,10 @@ public:
 			if (index > 0)
 			{
 				node* pp = nullptr;
-				for (int i = 0;i < index;i++)
+				for (int i = 0; i <= index - 1; i++)
 				{
-					if (index - 1 == i)
-					{
-						pp = c;
-					}
+
+					pp = c;
 					c = c->ptr;
 
 				}
@@ -112,12 +110,10 @@ public:
 		{
 			node* c = head;
 			node* pp{};
-			for (int i = 0;i < index;i++)
+			for (int i = 0; i <= index - 1; i++)
 			{
-				if (index - 1 == i)
-				{
-					pp = c;
-				}
+
+				pp = c;
 				c = c->ptr;
 
 			}
@@ -135,11 +131,10 @@ public:
 
 	ll operator+(ll& n )
 	{
-		ll* sum = new ll;
-		current->ptr = n.head;
-		sum->head = head;
-		sum->current = n.current;
-		return *sum;
+		ll sum ;
+		sum.head = head;
+		sum.current = n.head;		
+		return sum;
 	}
 
 
@@ -151,12 +146,14 @@ int main()
 	ll a;
 	a.append(1);
 	a.append(2);
-	a.append(32);
-	a.print();
-	log(a.size);
-	a.insert(2, 233);
-	a.print();
-
+	a.append(3);
+	ll b;
+	b.append(4);
+	b.append(5);
+	b.append(6);
+	b.print();
+	ll c = a + b;
+	c.print();
 
 }
 	
