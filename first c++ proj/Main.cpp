@@ -27,11 +27,10 @@ class ll {
 
 	node* head{};
 	node* current{};
-	node* x{};
-	
+	int size = 0;
 	 
 public:
-	int size = 0;
+	
 	~ll()
 	{
 		node* c = head;
@@ -53,7 +52,6 @@ public:
 			return;
 		}
 		node* n = new node(v, nullptr);
-		x = n;
 		current->ptr = n;
 		current = n;
 		size++;
@@ -131,10 +129,19 @@ public:
 
 	ll operator+(ll& n )
 	{
-		ll sum ;
-		sum.head = head;
-		sum.current = n.head;		
-		return sum;
+		ll* sum = new ll();
+		ll* temp = this;
+		for (int i = 0; i< this->size;i++)
+		{
+			int no = temp->get(i);
+			sum->append(no);
+		}
+		for (int i = 0; i < n.size;i++)
+		{
+			int no = n.get(i);
+			sum->append(no);
+		}
+		return *sum;
 	}
 
 
@@ -147,6 +154,7 @@ int main()
 	a.append(1);
 	a.append(2);
 	a.append(3);
+	a.print();
 	ll b;
 	b.append(4);
 	b.append(5);
@@ -154,6 +162,8 @@ int main()
 	b.print();
 	ll c = a + b;
 	c.print();
+
+	
 
 }
 	
