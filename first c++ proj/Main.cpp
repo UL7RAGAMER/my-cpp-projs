@@ -107,7 +107,7 @@ public:
 		if (index<size)
 		{
 			node* c = head;
-			node* pp{};
+			node* previous_pointer{};
 			for (int i = 0; i <= index - 1; i++)
 			{
 
