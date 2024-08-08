@@ -47,13 +47,13 @@ def filerep():
 def countinfile(file : str):
     count = 0
     with open(file, 'r') as f:
-        data = f.read()
-        data = data.split(' ')
+        data = f.readlines()
         for i in data:
-            if i == "to" or i == "the": 
-                count+=1
+            i = i.strip().split(' ')
+            count+=i.count('to') 
+            count+=i.count('the')
         return count
-    
+print(countinfile('asd.txt'))
 #8  
 def readndis(file : str):
     with open(file,'r') as f:

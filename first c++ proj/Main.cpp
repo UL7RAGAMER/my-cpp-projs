@@ -163,22 +163,21 @@ public:
 };
 
 //*((int*)((char*)pointer_array + byte_location))= new_val;
-int main()
-{
-	ll a;
-	a.append(1);
-	a.append(2);
-	a.append(3);
-	a.print();
-	ll b;
-	b.append(4);
-	b.append(5);
-	b.append(6);
-	b.print();
-	ll c = a + b;
-	c.print();
-	a.print();
+
+	//ll a;
+	//a.append(1);
+	//a.append(2);
+	//a.append(3);
+	//a.print();
+	//ll b;
+	//b.append(4);
+	//b.append(5);
+	//b.append(6);
+	//b.print();
+	//ll c = a + b;
+	//c.print();
+	//a.print();
 	
 
-}
-	
+
+
