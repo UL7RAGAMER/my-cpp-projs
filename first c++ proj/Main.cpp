@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 #define log(x) cout << x << endl;
 struct node {
@@ -162,22 +163,57 @@ public:
 
 };
 
-//*((int*)((char*)pointer_array + byte_location))= new_val;
 
-	//ll a;
-	//a.append(1);
-	//a.append(2);
-	//a.append(3);
-	//a.print();
-	//ll b;
-	//b.append(4);
-	//b.append(5);
-	//b.append(6);
-	//b.print();
-	//ll c = a + b;
-	//c.print();
-	//a.print();
-	
+class str
+{
+private:
+	char* buff;
+	unsigned int size_buff;
+public:
+	str(const char* s)
+	{
+		size_buff = strlen(s);
+		buff = new char[size_buff+1];
+		memcpy(buff, s, size_buff);
+		buff[size_buff] = 0;
+	}
+	str(const str& other)
+		: size_buff(other.size_buff+1)
+	{
+		buff = new char[size_buff];
+		memcpy(buff, other.buff, size_buff + 1);
 
+	}
+	~str()
+	{
+		delete[] buff;
+	}
+	friend ostream& operator<<(ostream& stream, const str& string);
+};
+
+ostream& operator<<(ostream& stream, const str& string)
+{
+	stream << string.buff;
+	return stream;
+}
+
+template <typename T> class M_vector
+{	
+private:
+	T* arr;
+	int size;
+public:
+	M_vector()
+{
+	arr = new T[1];
+	size = 1;
+
+}
+};
+
+int main() 
+{
+	M_vector<char> v;
+}
 
 

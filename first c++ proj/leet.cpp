@@ -32,12 +32,3 @@ ostream& operator<<(ostream& os, const vector<int> vec)
     os << "]";
     return os;
 }
-
-int main() {
-
-    vector<int> num({ 2,7,11,15 });
-    int n = 9;
-
-    log(twoSum(num,n));
-
-}
