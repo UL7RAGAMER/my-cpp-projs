@@ -202,13 +202,26 @@ template <typename T> class M_vector
 private:
 	T* arr;
 	int size;
+	int current;
 public:
 	M_vector()
 {
 	arr = new T[1];
 	size = 1;
+	
 
 }
+
+	void push(T)
+	{
+		T* temp_arr;
+		temp_arr = new T[sizeof(T)];
+		memccpy(temp_arr, arr, size);
+		temp_arr[current] = T;;
+		arr = temp_arr;
+
+	}
+
 };
 
 int main() 
