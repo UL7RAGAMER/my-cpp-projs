@@ -1,21 +1,20 @@
 #include <iostream>
 #include <string>
-#include <vector>
 using namespace std;
 #define log(x) cout << x << endl;
 struct node {
 
 	int value;
 	node* ptr;
-	node(){}
-	node(int v, node* p) 
-	{ 
+	node() {}
+	node(int v, node* p)
+	{
 		value = v;
 		ptr = p;
 	}
 	friend ostream& operator<<(ostream& os, const node obj) {
 		os << obj.value;
- 		if (obj.ptr) {
+		if (obj.ptr) {
 			os << " -> " << *obj.ptr;
 		}
 		else {
@@ -31,14 +30,14 @@ class ll {
 	node* head{};
 	node* current{};
 	int size = 0;
-	 
+
 public:
-	ll(){}
+	ll() {}
 
 	ll(const ll& other)
 	{
-		
-		for (int i = 0; i < other.size;i++)
+
+		for (int i = 0; i < other.size; i++)
 		{
 			int no = other.get(i);
 			this->append(no);
@@ -57,10 +56,10 @@ public:
 	}
 	void append(int v)
 	{
-		
-		if (!head) 
+
+		if (!head)
 		{
-			node* n= new node(v, nullptr);
+			node* n = new node(v, nullptr);
 			head = n;
 			current = head;
 			size++;
@@ -75,8 +74,8 @@ public:
 	{
 		int v = -1;
 		node* c = head;
-		
-		for (int i=0;i <= index;i++) 
+
+		for (int i = 0; i <= index; i++)
 		{
 			v = c->value;
 			c = c->ptr;
@@ -84,7 +83,7 @@ public:
 		return v;
 	}
 	int pop(int index)
-	{	
+	{
 		if (index < size)
 		{
 			node* c = head;
@@ -116,11 +115,11 @@ public:
 		}
 
 		else log("Out of bounds");
-				
+
 	}
 	void insert(int index, int value)
-	{	
-		if (index<size)
+	{
+		if (index < size)
 		{
 			node* c = head;
 			node* previous_pointer{};
@@ -138,21 +137,21 @@ public:
 		else log("Out of bounds");
 	}
 	void print()
-	{	
+	{
 		if (head) { log(*head); }
 		else log("Cannot print (nullptr)")
 	}
 
-	ll operator+(ll& n )
+	ll operator+(ll& n)
 	{
 		ll* sum = new ll();
 		ll* temp = this;
-		for (int i = 0; i < this->size;i++)
+		for (int i = 0; i < this->size; i++)
 		{
 			int no = temp->get(i);
 			sum->append(no);
 		}
-		for (int i = 0; i < n.size;i++)
+		for (int i = 0; i < n.size; i++)
 		{
 			int no = n.get(i);
 			sum->append(no);
@@ -173,12 +172,12 @@ public:
 	str(const char* s)
 	{
 		size_buff = strlen(s);
-		buff = new char[size_buff+1];
+		buff = new char[size_buff + 1];
 		memcpy(buff, s, size_buff);
 		buff[size_buff] = 0;
 	}
 	str(const str& other)
-		: size_buff(other.size_buff+1)
+		: size_buff(other.size_buff + 1)
 	{
 		buff = new char[size_buff];
 		memcpy(buff, other.buff, size_buff + 1);
@@ -198,35 +197,54 @@ ostream& operator<<(ostream& stream, const str& string)
 }
 
 template <typename T> class M_vector
-{	
+{
 private:
 	T* arr;
 	int size;
-	int current;
+	int curr_mem;
+	int max_mem;
 public:
-	M_vector()
-{
-	arr = new T[1];
-	size = 1;
-	
-
-}
-
-	void push(T)
+	M_vector(int ini_size)
+		: arr = ::operator new(ini_size * 2 * (int)sizeof(T)),
+		  max_mem = ini_size,
+		  size = 0
 	{
-		T* temp_arr;
-		temp_arr = new T[sizeof(T)];
-		memccpy(temp_arr, arr, size);
-		temp_arr[current] = T;;
-		arr = temp_arr;
+
+	}
+
+	void push(T element)
+	{
+		if (curr_mem + (int)sizeof(T) < max_mem)
+		{
+			arr[size] = element;
+			size++;
+		}
+
+		else
+		{
+			T* new_arr;
+			max_mem *= 2;
+			new_arr = new T[max_mem];
+			for (int i = 0; i < size; i++)
+			{
+				new_arr[i] = arr[i];
+			}
+			delete[] arr;
+			arr = new_arr;
+		}
+
+
 
 	}
 
 };
 
-int main() 
+int main()
 {
-	M_vector<char> v;
+	log(sizeof(int))
+		M_vector<int> v(1);
+	v.push(12);
+	v.push(22);
+	v.push(32);
 }
-
 
