@@ -8,13 +8,12 @@ template <typename T> class M_vector
 private:
 	T* arr;
 	int size;
-	int curr_mem;
-	int max_mem;
+	int capacity;
 public:
 
 	M_vector(int ini_size)
-		: arr{ new T(ini_size * 2) },
-		  max_mem{ ini_size * 2 * (int)sizeof(T) },
+		: arr{ static_cast<T*>(::operator new(ini_size * sizeof(T) * 2)) },
+		  capacity{ini_size * 2},
 		  size{0}
 	{
 	}
@@ -24,22 +23,21 @@ public:
 	}
 	int len()
 	{
-		return size
+		return capacity;
 	}
 	void push(T element)
 	{
-		if (curr_mem + (int)sizeof(T) < max_mem)
+		if (size < capacity)
 		{
 			arr[size] = element;
 			size++;
-			curr_mem = curr_mem + ((int)sizeof(T));
 		}
 
 		else
 		{
 			T* new_arr;
-			max_mem = max_mem * 2;
-			new_arr = new T[max_mem];
+			capacity = capacity * 2;
+			new_arr = static_cast<T*>(::operator new(capacity * sizeof(T)));
 			for (int i = 0; i < size; i++)
 			{
 				new_arr[i] = arr[i];
@@ -48,7 +46,6 @@ public:
 			arr = new_arr;
 			arr[size] = element;
 			size++;
-			curr_mem = curr_mem + ((int)sizeof(T));
 		}
 
 
@@ -69,17 +66,22 @@ int main()
 {
 	M_vector<int> v(1);
 	v.push(12);
-	v.len();
+	log(v.len());
+
 	v.push(22);
-	v.len();
+	log(v.len());
 	v.push(32);
-	v.len();
+	log(v.len());
+
 	v.push(42);
-	v.len();
+	log(v.len());
+
 	v.push(52);
-	v.len();
+	log(v.len());
+
 	v.push(62);
-	v.len();
+
+	log(v.len());
 	
 
 }
