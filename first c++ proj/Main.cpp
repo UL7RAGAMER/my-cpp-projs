@@ -12,14 +12,14 @@ private:
 public:
 
 	M_vector(int ini_size)
-		: arr{ static_cast<T*>(::operator new(ini_size * sizeof(T) * 2)) },
+		: arr{ (T*)(::operator new(ini_size * sizeof(T) * 2)) },
 		  capacity{ini_size * 2},
 		  size{0}
 	{
 	}
 	~M_vector()
 	{
-		delete[] arr;
+		operator delete(arr);
 	}
 	int len()
 	{
@@ -29,7 +29,7 @@ public:
 	{
 		if (size < capacity)
 		{
-			arr[size] = element;
+			new (arr+ size) T{element};
 			size++;
 		}
 
@@ -37,14 +37,14 @@ public:
 		{
 			T* new_arr;
 			capacity = capacity * 2;
-			new_arr = static_cast<T*>(::operator new(capacity * sizeof(T)));
+			new_arr = (T*)(::operator new(capacity * sizeof(T)));
 			for (int i = 0; i < size; i++)
 			{
 				new_arr[i] = arr[i];
 			}
 			delete[] arr;
 			arr = new_arr;
-			arr[size] = element;
+			new (arr + size) T{ element };
 			size++;
 		}
 
@@ -81,7 +81,7 @@ int main()
 
 	v.push(62);
 
-	log(v.len());
+	log(v);
 	
 
 }
