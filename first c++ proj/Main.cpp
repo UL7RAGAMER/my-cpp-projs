@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-#define log(x) cout << x << endl;
+#define log(x) cout << x << endl
 
 template <typename T> class M_vector
 {
@@ -10,7 +10,17 @@ private:
 	int size;
 	int capacity;
 public:
-
+	M_vector(const M_vector& other) 
+		:capacity(1),
+		size(0),
+		arr((T*)(::operator new(1 * sizeof(T) * 2)))
+	{
+		log("Copied");
+		for (int i = 0;i < other.size;i++)
+		{
+			push(other.get(i));
+		}
+	}
 	M_vector(int ini_size)
 		: arr{ (T*)(::operator new(ini_size * sizeof(T) * 2)) },
 		  capacity{ini_size * 2},
@@ -48,8 +58,10 @@ public:
 			size++;
 		}
 
-
-
+	}
+	T get(int index) const
+	{
+		return arr[index];
 	}
 	friend ostream& operator<<(ostream& stream, const M_vector<T>& a)
 	{
@@ -66,23 +78,9 @@ int main()
 {
 	M_vector<int> v(1);
 	v.push(12);
-	log(v.len());
-
-	v.push(22);
-	log(v.len());
-	v.push(32);
-	log(v.len());
-
-	v.push(42);
-	log(v.len());
-
-	v.push(52);
-	log(v.len());
-
-	v.push(62);
-
-	log(v);
-	
+	v.push(23);
+	M_vector<int> s = v;
+	log(s);
 
 }
 
