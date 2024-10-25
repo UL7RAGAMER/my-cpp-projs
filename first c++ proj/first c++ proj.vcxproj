@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="leet.cpp" />
+    <ClCompile Include="Linked_list.h" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="M_vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Str.h" />
     <ClInclude Include="test.h" />
   </ItemGroup>
   <ItemGroup>
