@@ -2,31 +2,130 @@
 #include <string>
 using namespace std;
 #define log(x) cout << x << endl
+#include "M_vector.h"
+#include <vector>
+#include <list>
+template <class T>
+int Hash(T key,int capacity){}
+template<>
+int Hash(int key, int capacity)
+{
+	return (key ^ ( key >> 4)) % capacity;
+}
+template<>
+int Hash(string key, int capacity)
+{
+	int l = key.length();
+	int r = 0;
+	for (int i = 0; i < l; i++)
+	{
+		r = r * 37 + (int)(key[i]);
+	}
+	return r % capacity;
+}
 
-template<typename K,typename V> class unordered_map
+
+
+template<typename K,typename V> 
+class unordered_map
 {
 private:
-	K key;
-	V value;
+	int bucket_size;
+	vector<vector<pair<K, V>>> buckets;
+
+
 
 public:
-	int Hash(int key, int capacity)
+	class Iterator
 	{
-		return key % capacity;
-	}
+	private:
+		using B_iterator = typename vector<pair<K, V>> ::iterator;
 
-	int Hash(string key, int capacity)
-	{
-		int l = key.length();
-		string r;
-		for (int i = 0; i < l; i++)
+		unordered_map* map;
+		B_iterator current;
+		int index;
+		
+		void next()
 		{
-			r += to_string((int)(key[i]));
+			while (index < map->bucket_size && current == map->buckets[index].end())
+			{
+				index++;
+				if (index < map->bucket_size)
+				{
+					current = map->buckets[index].begin();
+				}
+			}
 		}
-		return (stoi(r)) % capacity;
+	
+	public:
+		Iterator(unordered_map* map, B_iterator current, int index)
+			:map{map}, current{current},index(index)
+		{
+			if (index < map->bucket_size && current == map->buckets[index].end())
+				next();
+
+		}
+
+		pair<K, V>& operator*()
+		{
+			return *current;
+		}
+
+		Iterator& operator++()
+		{
+			current++;
+			next();
+			return *this;
+
+		}
+	bool operator==(const Iterator& other) const
+	{
+		return map == other.map && index == other.index && current == other.current;
+	}
+	bool operator!=(const Iterator& other) const
+	{
+		return !(*this == other);
 	}
 
 
+	};
+
+
+
+	unordered_map(int size = 10)
+		:bucket_size(size)
+	{
+		buckets.resize(size);
+	}
+
+	~unordered_map(){buckets.~vector();}
+
+	V& operator[](const K& key)
+	{
+		int hashIndex = Hash(key, bucket_size);
+		for (auto& p : buckets[hashIndex])
+		{
+			if (p.first == key)
+			{	
+				return p.second;
+			}
+		}
+
+		buckets[hashIndex].emplace_back(key, V());
+		return buckets[hashIndex].back().second;
+	}
+
+	Iterator begin() {
+		return Iterator(this, buckets[0].begin(), 0);
+	}
+
+	Iterator end() {
+		int lastBucket = bucket_size - 1;
+		while (lastBucket >= 0 && buckets[lastBucket].empty()) {
+			--lastBucket;
+		}
+		return lastBucket >= 0 ? Iterator(this, buckets[lastBucket].end(), lastBucket) : Iterator(this, buckets[0].end(), 0);
+	}
 
 };
 
@@ -35,6 +134,15 @@ public:
 
 int main()
 {	
-	unordered_map<int,int> o;
-	log(o.Hash("Ad", 4));
+	unordered_map<int, int> o{};
+	log(Hash(321,10));
+	log(Hash(133,10));
+	o[133] = 1;
+	o[321] = 2;
+	
+	for (auto& e : o)
+	{
+		log(e.first);
+	}
+
 }

@@ -16,7 +16,7 @@ private:
 		new_arr = (T*)(::operator new(capacity * sizeof(T)));
 		for (int i = 0; i < size; i++)
 		{
-			new (new_arr + i) T{ arr[i] };
+			new (new_arr + i) T{ move(arr[i]) };
 			arr[i].~T();
 		}
 		::operator delete(arr);
@@ -31,7 +31,7 @@ public:
 		log("Copied");
 		for (int i = 0; i < other.size; i++)
 		{
-			push(other.get(i));
+			push(other[i]);
 		}
 	}
 	M_vector& operator=(const M_vector& other)
@@ -53,10 +53,38 @@ public:
 			log("Copied");
 			for (int i = 0; i < other.size; i++)
 			{
-				push(other.get(i));
+				push(other[i]);
 			}
 		}
 
+		return *this;
+	}
+
+	M_vector& operator=(M_vector&& other)
+	{
+		if (arr != nullptr)
+		{
+			for (int i = 0; i < size; i++)
+			{
+				arr[i].~T();
+			}
+			::operator delete(arr);
+		}
+
+		capacity = other.capacity;
+		size = 0;
+		arr = (T*)(::operator new(capacity * sizeof(T)));
+		if (this != &other)
+		{
+			log("Moved");
+			for (int i = 0; i < other.size; i++)
+			{
+				push((T&&)(other[i]));
+			}
+		}
+		other.arr = nullptr;
+		other.arr = 0;
+		other.size = 0;
 		return *this;
 	}
 	M_vector(M_vector&& other) noexcept
@@ -90,21 +118,10 @@ public:
 		return capacity;
 	}
 
-	void push(const T& element)
+	void push(T& element)
 	{
 		log("Copied");
-		if (size < capacity)
-		{
-			new (arr + size) T{ element };
-			size++;
-		}
-
-		else
-		{
-			resize();
-			new (arr + size) T{ element };
-			size++;
-		}
+		emplace_back(element);
 
 
 	}
@@ -113,22 +130,11 @@ public:
 	void push(T&& element)
 	{
 		log("Moved");
-		if (size < capacity)
-		{
-			new (arr + size) T{ move(element) };
-			size++;
-		}
-
-		else
-		{
-			resize();
-			new (arr + size) T{ move(element) };
-			size++;
-		}
+		emplace_back(move(element));
 
 
 	}
-	template <class... Args>
+	template <typename... Args>
 	void emplace_back(Args&&... args)
 	{
 		log("Moved");
@@ -136,10 +142,10 @@ public:
 		{
 			resize();
 		}
-		new (arr + size) T(forward<Args>(args)...);
+		new (arr + size) T{forward<Args>(args)...};
 		size++;
 	}
-	T get(int index) const
+	const T& operator[](int index) const
 	{
 		if (index < 0 || index >= size)
 			throw out_of_range("Index out of bounds");

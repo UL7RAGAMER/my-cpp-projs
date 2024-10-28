@@ -1,12 +1,3 @@
 ﻿  Main.cpp
-C:\Users\siddk\source\repos\my-cpp-projs\first c++ proj\Main.cpp(20,9): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-      C:\Users\siddk\source\repos\my-cpp-projs\first c++ proj\Main.cpp(20,9):
-      the template instantiation context (the oldest one first) is
-          C:\Users\siddk\source\repos\my-cpp-projs\first c++ proj\Main.cpp(38,25):
-          see reference to class template instantiation 'unordered_map<int,int>' being compiled
-          C:\Users\siddk\source\repos\my-cpp-projs\first c++ proj\Main.cpp(18,6):
-          while compiling class template member function 'int unordered_map<int,int>::Hash(std::string,int)'
-              C:\Users\siddk\source\repos\my-cpp-projs\first c++ proj\Main.cpp(39,2):
-              see the first reference to 'unordered_map<int,int>::Hash' in 'main'
-  
+C:\Users\siddk\source\repos\my-cpp-projs\first c++ proj\Main.cpp(18,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   first c++ proj.vcxproj -> C:\Users\siddk\Source\Repos\my-cpp-projs\x64\Debug\first c++ proj.exe
