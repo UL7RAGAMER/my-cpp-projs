@@ -126,7 +126,18 @@ public:
 		}
 		return lastBucket >= 0 ? Iterator(this, buckets[lastBucket].end(), lastBucket) : Iterator(this, buckets[0].end(), 0);
 	}
-
+	auto find(K key)
+	{
+		int hashIndex = Hash(key, bucket_size);
+		for (auto it = buckets[hashIndex].begin(); it != buckets[hashIndex].end(); ++it)
+		{
+			if (it->first == key)
+			{
+				return Iterator(this, it, hashIndex);
+			}
+		}
+		return end();
+	}
 };
 
 
@@ -140,9 +151,9 @@ int main()
 	o[133] = 1;
 	o[321] = 2;
 	
-	for (auto& e : o)
+	if (o.find(321) == o.end())
 	{
-		log(e.first);
+		log("Not present");
 	}
 
 }
