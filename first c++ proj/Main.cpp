@@ -5,6 +5,7 @@ using namespace std;
 #include "M_vector.h"
 #include <vector>
 #include <list>
+#include <utility>
 template <class T>
 int Hash(T key,int capacity){}
 template<>
@@ -100,9 +101,23 @@ public:
 
 	~unordered_map(){buckets.~vector();}
 
+	void del(K key)
+	{
+		int hashi = Hash(key, bucket_size);
+		auto& bucket = buckets[hashi];
+		for (auto it = bucket.begin(); it != bucket.end(); ++it) 
+		{
+			if (it->first == key)
+			{
+				bucket.erase(it);
+				return;
+			}
+		}
+	}
 	V& operator[](const K& key)
 	{
 		int hashIndex = Hash(key, bucket_size);
+		
 		for (auto& p : buckets[hashIndex])
 		{
 			if (p.first == key)
@@ -151,9 +166,10 @@ int main()
 	o[133] = 1;
 	o[321] = 2;
 	
-	if (o.find(321) == o.end())
+	o.del(133);
+	for (auto& p : o)
 	{
-		log("Not present");
+		log(p.first);
 	}
 
 }
