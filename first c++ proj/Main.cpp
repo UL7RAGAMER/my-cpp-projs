@@ -3,8 +3,8 @@
 using namespace std;
 #define log(x) cout << x << endl
 #include "M_vector.h"
-#include <vector>
 #include <list>
+#include <algorithm>
 #include <utility>
 template <class T>
 int Hash(T key,int capacity){}
@@ -32,24 +32,25 @@ class unordered_map
 {
 private:
 	int bucket_size;
-	vector<vector<pair<K, V>>> buckets;
+	list<pair<K, V>>* buckets;
 	int elements = 0;
 	const double load_factor = 0.85;
 	void rehash()
 	{
 		log("rehash");
 		int new_bucket_size = bucket_size * 2;
-		vector<vector<pair<K, V>>> new_bucket(new_bucket_size) ;
-		for (const auto& b : buckets)
+		list<pair<K, V>>* new_bucket = new list<pair<K, V>>[new_bucket_size];
+		for (int i= 0 ;i<bucket_size;i++)
 		{
-			for (const auto& p : b)
+			for (const auto& p : buckets[i])
 
 			{
 
 				int new_hash_index = Hash(p.first, new_bucket_size);
-				new_bucket[new_hash_index].emplace_back(p);
+				new_bucket[new_hash_index].push_back(p);
 			}
 		}
+		delete[] buckets;
 		buckets = move(new_bucket);
 		bucket_size = new_bucket_size;
 	}
@@ -60,7 +61,7 @@ public:
 	class Iterator
 	{
 	private:
-		using B_iterator = typename vector<pair<K, V>> ::iterator;
+		using B_iterator = typename list<pair<K, V>> ::iterator;
 
 		unordered_map* map;
 		B_iterator current;
@@ -116,10 +117,12 @@ public:
 	unordered_map(int size = 10)
 		:bucket_size(size)
 	{
-		buckets.resize(size);
+		buckets = new list<pair<K, V>>[bucket_size];
 	}
-
-	~unordered_map(){buckets.~vector();}
+	~unordered_map()
+	{
+		delete[] buckets;
+	}
 
 	void del(K key)
 	{
@@ -165,7 +168,8 @@ public:
 		while (lastBucket >= 0 && buckets[lastBucket].empty()) {
 			--lastBucket;
 		}
-		return lastBucket >= 0 ? Iterator(this, buckets[lastBucket].end(), lastBucket) : Iterator(this, buckets[0].end(), 0);
+		return Iterator(this, buckets[bucket_size - 1].end(), bucket_size - 1);
+
 	}
 	auto find(K key)
 	{
@@ -180,22 +184,37 @@ public:
 		return end();
 	}
 
-	unordered_map& operator=(unordered_map& o) noexcept
+	unordered_map& operator=(const unordered_map& o) noexcept
 	{
-		log("Copy");
-		buckets.clear();
-		buckets = o.buckets;
+		log("Copied");
+		
+		if (this == &o) return *this;
+
+		delete[] buckets;
+
 		bucket_size = o.bucket_size;
+		elements = o.elements;
+		buckets = new list<pair<K, V>>[bucket_size];
+		for (int i = 0; i < bucket_size; ++i) {
+			buckets[i] = o.buckets[i];
+		}
 		return *this;
 	}
-	unordered_map& operator=(unordered_map&& o) noexcept
-	{
+	unordered_map& operator=(unordered_map&& o) noexcept {
 		log("Moved");
-		buckets.clear();
-		buckets = o.buckets;
-		bucket_size = o.bucket_size;
-		o.buckets.clear();
-		o.bucket_size = 0;
+
+		if (this != &o) {
+			delete[] buckets; 
+
+			buckets = o.buckets;
+			bucket_size = o.bucket_size;
+			elements = o.elements;
+
+			o.buckets = nullptr;
+			o.bucket_size = 0;
+			o.elements = 0;
+		}
+
 		return *this;
 	}
 };
@@ -205,21 +224,15 @@ public:
 
 int main()
 {	
-	unordered_map<int, int> o{};
-	log(Hash(321,10));
-	o[133] = 1;
-	o[321] = 2;
-	o[113] = 1;
-	o[321] = 2;
-	o[1323] = 1;
-	o[3214] = 2;
-	o[1334] = 1;
-	o[3252] = 2;
+	
+	unordered_map<int,int> o;
+	o[1] = 2;
+	o[2] = 41;
 	o[123] = 1;
-	o[322341] = 2;
-	o[1333] = 1;
-	log(Hash(133, 10));
-	o[3251] = 2;
 
+	for (auto& i : o)
+	{
+		log((i).first);
+	}
 
 }
